@@ -2,3 +2,4 @@ base:
   '*':
       - apache
       - php
+      - mariadb
