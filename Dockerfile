@@ -1,16 +1,17 @@
 # Install LAMP stack and MediaWiki using puppet
 
 # use the latest ubuntu image
-FROM ubuntu:12.04
+FROM saltstack/ubuntu-14.04
 
 MAINTAINER Markus Glaser "glaser@hallowelt.biz"
+MAINTAINER Tyler Cipriani "tcipriani@wikimedia.org"
 
 ENV MWVERSION 1.24.2
 ENV MWDOWNLOADDIR 1.24
 
-ADD ./salt/minion.conf /etc/salt/minon
+ADD salt/minion.conf /etc/salt/minion
 
-# update package repository
+# Provision with salt
 RUN apt-get update
-RUN wget -O - https://bootstrap.saltstack.com | sudo sh
-
+RUN apt-get install -y -o DPkg::Options::=--force-confold salt-minion
+RUN salt-call cmd.run 'uname'
