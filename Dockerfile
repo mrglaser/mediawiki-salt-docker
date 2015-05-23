@@ -9,9 +9,12 @@ MAINTAINER Tyler Cipriani "tcipriani@wikimedia.org"
 ENV MWVERSION 1.24.2
 ENV MWDOWNLOADDIR 1.24
 
-ADD salt/minion.conf /etc/salt/minion
-
-# Provision with salt
+# Install salt
 RUN apt-get update
 RUN apt-get install -y -o DPkg::Options::=--force-confold salt-minion
-RUN salt-call cmd.run 'uname'
+
+# Provision with salt
+COPY salt/minion.conf /etc/salt/minion
+COPY salt /srv/salt/
+RUN salt-call --local state.highstate
+
