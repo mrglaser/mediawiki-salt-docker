@@ -18,3 +18,10 @@ COPY salt/minion.conf /etc/salt/minion
 COPY salt /srv/salt/
 RUN salt-call --local state.highstate
 
+# Add start script
+ADD ./scripts/docker-entrypoint.sh /docker-entrypoint.sh
+
+# make port 80 available
+EXPOSE 80
+
+ENTRYPOINT ["/bin/bash", "/docker-entrypoint.sh"]
